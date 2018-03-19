@@ -7,6 +7,7 @@ import { CompleterService, CompleterData, LocalData, RemoteData } from 'ng-mdb-p
 import { CountryModel } from './country.model';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { CookieService } from 'ngx-cookie-service';
+import { async } from '@angular/core/testing';
 
 @Component({
   selector: 'app-root',
@@ -21,30 +22,34 @@ export class AppComponent implements OnInit {
     {value: '', label: ''}
     ];
   selectedValue: string;
-  selectedCountry = '';
+  selectedCountry = 'leeg';
 
   constructor(
     private completerService: CompleterService,
     private appService: AppService,
     private cookieService: CookieService) {
-      this.countryCookieName = 'countryCookie';
-      // this.fillCountryDS(this.countries);
-    this.appService.getCountries().subscribe(data => {
-      if (!this.cookieService.check(this.countryCookieName)) {
-        this.cookieService.set(this.countryCookieName, JSON.stringify(data));
-        const test = JSON.parse(this.cookieService.get(this.countryCookieName));
-      }
 
-      this.fillCountryDS(data);
+
+  }
+
+  ngOnInit() {
+    this.testDate();
+    this.selectedCountry = 'leeg';
+    const test = this.getCountries().then(() => {
+      console.log('Finished');
     });
   }
-  ngOnInit() {
+
+  async getCountries() {
+    await this.appService.getCountries().subscribe(data => {
+      this.fillCountryDS(data);
+   });
+  //   await this.appService.getCountries().subscribe(data => {
+  //     this.fillCountryDS(data);
+  //  });
   }
 
   fillCountryDS(data) {
-    // if (this.cookieService.check(this.countryCookieName)) {
-      data = JSON.parse(this.cookieService.get(this.countryCookieName));
-    // }
     this.countries = data;
     this.countries.forEach(c => {
       c.value = c.code;
@@ -53,8 +58,9 @@ export class AppComponent implements OnInit {
 
     this.selectedCountry = this.countries[6].value;
     console.log(this.countries[6].value);
+  }
 
-    // this.selectedValue = this.dateOptionsSelect;
+  testDate() {
     this.dateOptionsSelect = [
       { value: '1', label: 'Today'},
       { value: '2', label: 'Yesterday' },
@@ -65,7 +71,7 @@ export class AppComponent implements OnInit {
       ];
 
     this.selectedValue = this.dateOptionsSelect[3].value;
-    console.log(this.dateOptionsSelect[3].value);
+    console.log('testDate');
   }
 
   onTextChangeCountry() {

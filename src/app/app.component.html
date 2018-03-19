@@ -6,17 +6,15 @@
     </h3>
     <div class="card-body">
       <label>Select country: </label>
-      <mdb-select [(ngModel)]="selectedCountry" [options]="countries" placeholder="Choose your option"></mdb-select>
+      <mdb-select [ngModel]="selectedCountry" (selected)="selectedCountry" [options]="countries" placeholder="Choose your option"></mdb-select>
       <div>
           Country code: {{selectedCountry}}
-          
       </div>
     </div>
   
     <mdb-select [(ngModel)]="selectedValue" [options]="dateOptionsSelect" placeholder="Choose time period"></mdb-select>
     <div>
         Time: {{selectedValue}}
-        
     </div>
   </div>
 </div>
