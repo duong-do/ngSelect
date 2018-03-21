@@ -24,7 +24,7 @@
     "core-js": "^2.4.1",
     "font-awesome": "^4.7.0",
     "hammerjs": "^2.0.8",
-    "ng-mdb-pro": "git+https://oauth2:pT32WXwXjzy2ZwieWEfa@git.mdbootstrap.com/mdb/angular/ng-pro.git#master",
+    "ng-mdb-pro": "Add your token here",
     "ngx-cookie-service": "1.0.10",
     "rxjs": "^5.5.6",
     "zone.js": "^0.8.19"

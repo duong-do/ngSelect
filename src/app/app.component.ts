@@ -16,48 +16,31 @@ import { async } from '@angular/core/testing';
 })
 export class AppComponent implements OnInit {
   countries: Array<CountryModel>;
-  countryCookieName = 'countryCookie';
-
-  dateOptionsSelect: any = [
-    {value: '', label: ''}
-    ];
+  dateOptionsSelect: any;
   selectedValue: string;
-  selectedCountry = 'leeg';
+  selectedCountry = '';
 
-  constructor(
-    private completerService: CompleterService,
-    private appService: AppService,
-    private cookieService: CookieService) {
-
-
+  constructor(private appService: AppService) {
   }
 
   ngOnInit() {
     this.testDate();
-    this.selectedCountry = 'leeg';
-    const test = this.getCountries().then(() => {
-      console.log('Finished');
-    });
+    this.loadCountries();
   }
 
-  async getCountries() {
-    await this.appService.getCountries().subscribe(data => {
-      this.fillCountryDS(data);
-   });
-  //   await this.appService.getCountries().subscribe(data => {
-  //     this.fillCountryDS(data);
-  //  });
-  }
-
-  fillCountryDS(data) {
-    this.countries = data;
-    this.countries.forEach(c => {
-      c.value = c.code;
-      c.label = c.name;
-    });
-
+  async loadCountries() {
+    await this.getCountries();
     this.selectedCountry = this.countries[6].value;
-    console.log(this.countries[6].value);
+  }
+
+  getCountries(): Promise<any> {
+    return this.appService.getCountries().toPromise().then((data) => {
+      this.countries = data;
+      this.countries.forEach(c => {
+        c.value = c.code;
+        c.label = c.name;
+      });
+    });
   }
 
   testDate() {
@@ -71,12 +54,5 @@ export class AppComponent implements OnInit {
       ];
 
     this.selectedValue = this.dateOptionsSelect[3].value;
-    console.log('testDate');
-  }
-
-  onTextChangeCountry() {
-  }
-
-  onSelectChangeCountry(evnt: any) {
   }
 }
